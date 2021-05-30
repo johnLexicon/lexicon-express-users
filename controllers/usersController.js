@@ -10,11 +10,25 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
+const getUser = async (req, res, next) => {
+  try {
+    userId = req.params.id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ errors: { message: `User with id: ${userId} no found` } });
+    }
+    return res.status(200).json(user);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const ROUNDS = 10;
 
 const createUser = async (req, res, next) => {
   try {
-    console.log(req.body); //TODO: Remove this
     if (!req.body.password) {
       return res.status(400).json({
         errors: {
@@ -31,15 +45,13 @@ const createUser = async (req, res, next) => {
       isAdmin: req.body.isAdmin,
     });
 
-    return res
-      .status(201)
-      .json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        avatar: user.avatar,
-        isAdmin: user.isAdmin,
-      });
+    return res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      isAdmin: user.isAdmin,
+    });
   } catch (err) {
     next(err);
   }
@@ -57,6 +69,7 @@ const deleteUser = async (req, res, next) => {
 
 module.exports = {
   getAllUsers,
+  getUser,
   createUser,
   deleteUser,
 };
