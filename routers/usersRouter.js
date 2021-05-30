@@ -6,14 +6,12 @@ const {
   deleteUser,
 } = require('../controllers/usersController');
 
-const PATH = '/users';
+router.get('/', getAllUsers);
 
-router.get(PATH, getAllUsers);
+router.get('/:id', getUser);
 
-router.get(`${PATH}/:id`, getUser);
+router.post('/', createUser);
 
-router.post(PATH, createUser);
-
-router.delete(`${PATH}/:id`, deleteUser);
+router.delete('/:id', deleteUser);
 
 module.exports = router;
