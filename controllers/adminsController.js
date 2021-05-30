@@ -67,9 +67,36 @@ const deleteAdmin = async (req, res, next) => {
   }
 };
 
+const adminLogin = async (req, res, next) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+    const admin = await Admin.findOne({ email: email });
+    if (!admin) {
+      return res
+        .status(400)
+        .json({ errors: { message: `Admin with email: ${email} not found.` } });
+    }
+
+    const isValid = await bcrypt.compare(password, admin.hashedPassword);
+    if (isValid) {
+      return res
+        .status(200)
+        .json({ _id: admin._id, name: admin.name, email: admin.email });
+    } else {
+      return res
+        .status(401)
+        .json({ errors: { message: 'Authentication failed' } });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getAllAdmins,
   getAdmin,
   createAdmin,
   deleteAdmin,
+  adminLogin,
 };
