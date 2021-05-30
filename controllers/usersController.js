@@ -36,7 +36,18 @@ const createUser = async (req, res, next) => {
   }
 };
 
+const deleteUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    await User.findByIdAndDelete(userId);
+    return res.status(200).send();
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getAllUsers,
   createUser,
+  deleteUser,
 };
