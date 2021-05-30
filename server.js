@@ -11,7 +11,7 @@ app.listen(app.get('port'), (err) => {
   if (err) {
     console.log('Error in server setup: ' + err);
   }
-  console.log('Server running on: http://localhost:' + app.get('port'));
+  console.log(`Server running on port:${app.get('port')}`);
 });
 
 mongoose.set('useCreateIndex', true).connect(
