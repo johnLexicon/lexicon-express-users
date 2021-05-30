@@ -23,14 +23,23 @@ const createUser = async (req, res, next) => {
       });
     }
     const hashedPassword = await bcrypt.hash(req.body.password, ROUNDS);
-    const user = User.create({
+    const user = await User.create({
+      name: req.body.name,
       email: req.body.email,
       hashedPassword,
       avatar: req.body.avatar,
       isAdmin: req.body.isAdmin,
     });
 
-    return res.status(201).json(user);
+    return res
+      .status(201)
+      .json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        isAdmin: user.isAdmin,
+      });
   } catch (err) {
     next(err);
   }
