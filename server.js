@@ -1,6 +1,11 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
 const app = require('./app');
+
+console.log('Environment NODE_ENV: ' + process.env.NODE_ENV); // TODO: remove this.
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 app.set('port', process.env.PORT || 9999);
 
