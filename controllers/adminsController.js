@@ -82,7 +82,12 @@ const adminLogin = async (req, res, next) => {
     if (isValid) {
       return res
         .status(200)
-        .json({ _id: admin._id, name: admin.name, email: admin.email });
+        .json({
+          _id: admin._id,
+          name: admin.name,
+          email: admin.email,
+          avatar: admin.avatar,
+        });
     } else {
       return res
         .status(401)
